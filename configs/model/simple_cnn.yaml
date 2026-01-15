@@ -1,0 +1,25 @@
+model:
+  name: 'simple_cnn'
+  save_name: 'simple_cnn_mnist'
+
+  params:
+    model_params:
+      num_channels: 1
+      hidden_state: 800
+      num_classes: 10
+
+    training_params:
+      num_epochs: 15
+      batch_size: 64
+      num_workers: 2
+      criterion: 'cross_entropy_loss'
+      optimizer: 
+        name: 'adamw'
+        params:
+          lr: 1e-3
+          weight_decay: 1e-4
+      scheduler: 
+        name: 'exponential_lr'
+        step: 3
+        params:
+          gamma: 0.9

@@ -1,0 +1,12 @@
+defaults:
+  - dataset: mnist
+  - model: simple_cnn
+
+mode: 'train'
+
+paths:
+  artifacts: './artifacts/'
+
+env:
+  device: 'cuda:0'
+  random_state: 42
