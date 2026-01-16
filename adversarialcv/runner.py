@@ -9,6 +9,7 @@ import torchvision
 
 from adversarialcv.dataset import AdversarialDataloader
 from adversarialcv.module import Module
+from adversarialcv.attacker import FGSMAttack
 
 class TrainRunner():
     '''
@@ -66,3 +67,32 @@ class EvalRunner():
         score = model.score(test_dataloader)
         
         logging.info(score)
+
+class AttackRunner():
+    '''
+    Attack runner, load model, attack it and evaluate on attacked data
+    '''
+    def __init__(self, config: Dict) -> None:
+        '''
+        Init method AttackRunner
+        :params:
+            config: Dict - configuration file with parameters
+        '''
+        self.config = config
+        self.model_config = config['model']
+        self.dataset_config = config['dataset']
+        self.attack_config = config['attack']
+    
+    def run(self) -> None:
+        '''
+        Method for attack model
+        Initialize dataloaders, attack class and evaluate model on attacked data
+        '''
+        dataloader = AdversarialDataloader(self.dataset_config, self.model_config['params']['training_params'])
+        _, _, test_dataloader = dataloader.get_dataloaders()
+
+        model = Module(self.config)
+        model.load_checkpoint()
+
+        attacker = FGSMAttack(self.attack_config, model._model)
+        attacker.fit(test_dataloader)

@@ -1,0 +1,5 @@
+attack:
+  name: 'fgsm_untargeted'
+
+  params:
+    epsilon: 0.07

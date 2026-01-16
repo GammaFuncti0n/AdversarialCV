@@ -1,8 +1,9 @@
 defaults:
   - dataset: mnist
   - model: resnet18
+  - attack: fgsm_untargeted
 
-mode: 'eval'
+mode: 'attack'
 
 paths:
   artifacts: './artifacts/'
