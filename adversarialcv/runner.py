@@ -9,7 +9,7 @@ import torchvision
 
 from adversarialcv.dataset import AdversarialDataloader
 from adversarialcv.module import Module
-from adversarialcv.attacker import FGSMAttack
+from adversarialcv.attacker import FGSMAttack, PGDAttack
 
 class TrainRunner():
     '''
@@ -93,6 +93,14 @@ class AttackRunner():
 
         model = Module(self.config)
         model.load_checkpoint()
+        score = model.score(test_dataloader)
+        logging.info(f'Model performance before attack: {score}')
 
-        attacker = FGSMAttack(self.attack_config, model._model)
+        if self.attack_config['name'] == 'fgsm_untargeted':
+            attacker = FGSMAttack(self.attack_config, model._model)
+        elif self.attack_config['name'] == 'pgd_untargeted':
+            attacker = PGDAttack(self.attack_config, model._model)
+        else:
+            raise Exception(f"Unsupported attack: {self.attack_config['name']}")
+            
         attacker.fit(test_dataloader)

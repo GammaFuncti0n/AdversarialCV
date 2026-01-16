@@ -1,0 +1,6 @@
+attack:
+  name: 'pgd_untargeted'
+
+  params:
+    num_iters: 50
+    epsilon: 0.08
