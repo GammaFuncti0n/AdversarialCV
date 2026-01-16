@@ -33,8 +33,36 @@ class TrainRunner():
         train_dataloader, val_dataloader, test_dataloader = dataloader.get_dataloaders()
         
         model = Module(self.config)
-        #model.fit(train_dataloader, val_dataloader)
+        model.fit(train_dataloader, val_dataloader)
 
         model.load_checkpoint()
         score = model.score(test_dataloader)
+        logging.info(score)
+
+class EvalRunner():
+    '''
+    Evaluation runner, load model and evaluate on test data
+    '''
+    def __init__(self, config: Dict) -> None:
+        '''
+        Init method EvalRunner
+        :params:
+            config: Dict - configuration file with parameters
+        '''
+        self.config = config
+        self.model_config = config['model']
+        self.dataset_config = config['dataset']
+    
+    def run(self) -> None:
+        '''
+        Method for evaluate model
+        Initialize dataloaders and evaluate the model
+        '''
+        dataloader = AdversarialDataloader(self.dataset_config, self.model_config['params']['training_params'])
+        _, _, test_dataloader = dataloader.get_dataloaders()
+        
+        model = Module(self.config)
+        model.load_checkpoint()
+        score = model.score(test_dataloader)
+        
         logging.info(score)

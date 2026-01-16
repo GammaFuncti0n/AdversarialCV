@@ -45,7 +45,7 @@ class Module():
         '''Initializing model'''
         if self._model_name == 'simple_cnn':
             return SimpleCNN(**self._model_params).to(self._device)
-        if self._model_name == 'resnet18':
+        elif self._model_name == 'resnet18':
             return ResNet18(**self._model_params).to(self._device)
         else:
             raise Exception(f"Unsupported model: {self._model_name}")

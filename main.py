@@ -6,7 +6,7 @@ import os
 import logging
 import time
 
-from adversarialcv.train_runner import TrainRunner
+from adversarialcv.runner import TrainRunner, EvalRunner
 from utils.config import load_config, seed_everything
 
 def main() -> None:
@@ -31,6 +31,9 @@ def main() -> None:
     # run code
     if(config['mode'] == 'train'):
         runner = TrainRunner(config)
+        runner.run()
+    elif(config['mode'] == 'eval'):
+        runner = EvalRunner(config)
         runner.run()
     else:
         raise Exception(f"Unsupported mode: {config['mode']}")

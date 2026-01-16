@@ -1,8 +1,8 @@
 defaults:
   - dataset: mnist
-  - model: simple_cnn
+  - model: resnet18
 
-mode: 'train'
+mode: 'eval'
 
 paths:
   artifacts: './artifacts/'
