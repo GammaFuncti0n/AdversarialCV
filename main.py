@@ -1,3 +1,6 @@
+'''
+Main script for running code
+'''
 import yaml
 import os
 import logging
@@ -7,10 +10,13 @@ from adversarialcv.train_runner import TrainRunner
 from utils.config import load_config, seed_everything
 
 def main() -> None:
+    # set up config
     config_dir = "./configs/"
     base_config_path = os.path.join(config_dir, 'config.yaml')
     config = load_config(base_config_path, config_dir)
 
+    # fix seeds and logger
+    os.environ['TORCH_HOME'] = os.path.join(config['paths']['artifacts'], 'cache')
     seed_everything(config['env']['random_state'])
     os.makedirs(os.path.join(config['paths']['artifacts'], 'logs'), exist_ok=True)
     logging.basicConfig(
@@ -22,6 +28,7 @@ def main() -> None:
         )
     logging.info(config)
 
+    # run code
     if(config['mode'] == 'train'):
         runner = TrainRunner(config)
         runner.run()

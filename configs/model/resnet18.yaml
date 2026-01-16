@@ -1,15 +1,13 @@
 model:
-  name: 'simple_cnn'
-  save_name: 'simple_cnn_mnist'
+  name: 'resnet18'
+  save_name: 'resnet18_mnist'
 
   params:
     model_params:
-      num_channels: 1
-      hidden_state: 800
       num_classes: 10
 
     training_params:
-      num_epochs: 4
+      num_epochs: 5
       batch_size: 64
       num_workers: 2
       criterion: 'cross_entropy_loss'

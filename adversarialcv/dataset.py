@@ -8,13 +8,14 @@ from torchvision.datasets import MNIST
 
 class AdversarialDataloader():
     '''
-    Load dataset and compile dataloaders
+    Class for load dataset and compile it in dataloaders
     '''
     def __init__(self, dataset_config: Dict, train_config: Dict) -> None:
         '''
         Init method AdversarialDataloader
         :params:
             dataset_config: Dict - configuration dictionary with name of dataset and path for it
+            train_config: Dict - configuration dictionary with dataloader params
         '''
         self.dataset_config = dataset_config
         self.train_config = train_config
@@ -28,6 +29,10 @@ class AdversarialDataloader():
     def get_dataloaders(self) -> Tuple[DataLoader, DataLoader, DataLoader]:
         '''
         Return train/val/test dataloaders
+        :returns:
+            train_dataloader - dataloader with train data
+            val_dataloader - dataloader with valodation data 
+            test_dataloader - dataloader with test data
         '''
         if(self.dataset.train_data is not None):
             train_dataloader = torch.utils.data.DataLoader(
@@ -72,11 +77,13 @@ class AdversarialDataloader():
 
 class MNISTDataset():
     '''
-    Classic MNIST dataset from torchvision dataset
+    MNIST dataset from torchvision dataset
     '''
     def __init__(self, path: str) -> None:
         '''
         Init method MNISTDataset
+        :params:
+            path - path where load and take dataset
         '''
         self.train_transforms = torchvision.transforms.Compose([
             torchvision.transforms.RandomRotation(30),
@@ -87,4 +94,5 @@ class MNISTDataset():
         ])
 
         self.train_data = MNIST(path, train=True, transform=self.train_transforms, download=True)
+        # validation and test the same part of data
         self.val_data = self.test_data = MNIST(path, train=False, transform=self.test_transforms, download=True)

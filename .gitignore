@@ -1,3 +1,4 @@
 data/
 artifacts/
 *.ipynb
+__pycache__/

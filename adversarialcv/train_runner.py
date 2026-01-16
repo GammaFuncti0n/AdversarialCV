@@ -12,26 +12,29 @@ from adversarialcv.module import Module
 
 class TrainRunner():
     '''
-    Class for init model and fit on data 
+    Train runner for fit model on data
     '''
-    def __init__(self, config: Dict):
+    def __init__(self, config: Dict) -> None:
         '''
         Init method TrainRunner
+        :params:
+            config: Dict - configuration file with parameters for fitting
         '''
-        self.config = config # main config
+        self.config = config
         self.model_config = config['model']
         self.dataset_config = config['dataset']
     
     def run(self) -> None:
         '''
         Method for run model training
-        Initialize dataloaders, fit model, if needed validate and save model
+        Initialize dataloaders and fit the model
         '''
         dataloader = AdversarialDataloader(self.dataset_config, self.model_config['params']['training_params'])
         train_dataloader, val_dataloader, test_dataloader = dataloader.get_dataloaders()
         
         model = Module(self.config)
-        model.fit(train_dataloader, val_dataloader)
+        #model.fit(train_dataloader, val_dataloader)
 
-        ### TO DO ###
-        # evaluate on test data
+        model.load_checkpoint()
+        score = model.score(test_dataloader)
+        logging.info(score)
